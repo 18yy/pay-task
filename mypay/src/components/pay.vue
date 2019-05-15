@@ -11,6 +11,29 @@
       <div class="pay-show-inner">
         <img :src="sTopBgSrc" alt="sTopBgSrc">
         <img :src="sBottomBgSrc" alt="sBottomBgSrc">
+        <div class="pay-show-inner-content">
+          <div class="content-header">
+            <p>{{carid}}</p>
+            <p v-if="!isPaid">
+              未缴费
+            </p>
+            <p v-else>
+              已缴费
+            </p>
+          </div>
+          <div class="content-body">
+            <div class="content-time">
+              <div v-for="(item,index) in times" :key="item.id"s>
+                <p>{{item.title}}</p>
+                <p><span>{{item.date}}</span><span>{{item.dateTime}}</span></p>
+              </div>
+             
+            </div>
+            <div class="content-price">
+              <p>￥<span>{{paidPrice}}</span></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="pay-choose-box">
@@ -40,6 +63,21 @@
         sTopBgSrc:require('@/assets/s-top-bg.png'),
         sBottomBgSrc:require('@/assets/s-bottom-bg.png'),
         backSrc:require('@/assets/back.png'),
+        carid: "粤B12344",
+        isPaid:false,
+        times:[{
+          id:0,
+          title:"进场时间",
+          date:"2018-03-10",
+          dateTime:"12:10"
+        },
+        {
+          id: 1,
+          title: "出场时间",
+          date: "2018-03-14",
+          dateTime: "11:20"
+        }],
+        paidPrice:"40.00",
         radios:[{
           id:0,
           title:"微信支付",
@@ -92,6 +130,7 @@
     display: flex;
     flex-direction:column;
   }
+ /* 头部部分 */
   .header{
     width: 100%;
     height:100px;
@@ -122,6 +161,7 @@
     letter-spacing: 0.58px;
     padding-bottom: 2px;
   }
+  /* 停车缴费详细信息部分 */
   .pay-show{
     width: 100%;
     height: 405px;
@@ -148,28 +188,96 @@
     top: 0;
     right: 0;
   }
-  .pay-show-inner img:last-child{
+  .pay-show-inner img[alt="sBottomBgSrc"]{
      width: 310px;
      height: 200px;
      bottom: 0;
      right: 0;
+     z-index: 1;
   }
- 
-  .pay-btn{
-    width: 686px;
-    height: 88px;
-    background: #21C4B3;
-    border-radius: 4px;
-    margin: 20px auto;
-  }
-  .pay-btn>p{
-    font-family: PingFangSC-Regular;
-    font-size: 36px;
+ .pay-show-inner-content{
+     width: 100%;
+     height: 100%;
+     position: absolute;
+     top: 0;
+     left: 0;
+     z-index: 999;
+ }
+ .content-header{
+    width: 100%;
+    height: 24%;
+    padding: 0 5%;
+    border: 2px solid rgba(255,255,255,.3);
+    box-sizing: border-box;
+    display: flex;
+    justify-content:space-between;
+    align-items: center
+ }
+ .content-header>p{
+    font-family: PingFangSC-Medium;
+    font-size: 26px;
     color: #FFFFFF;
-    letter-spacing: 0.58px;
-    text-align: center;
-    line-height: 88px;
-  }
+    letter-spacing: 0;
+ }
+ .content-header>p:last-child{
+   width: 100px;
+   height: 41px;
+   opacity: 0.8;
+   background: #FFFFFF;
+   border-radius: 66px;
+   font-family: PingFangSC-Regular;
+   font-size: 24px;
+   color: #1890FF;
+  line-height: 41px;
+ }
+ .content-body{
+   width: 100%;
+   height:76%;
+   display: flex;
+   padding: 0 5%;
+   box-sizing: border-box
+ }
+ .content-body>div{
+   flex:1;
+ }
+ .content-time{
+   width: 60%;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+  
+ }
+ .content-time>div{
+   flex: 1;
+   padding-top: 8%;
+ }
+ .content-time>div>p{
+   font-family: PingFangSC-Regular;
+   font-size: 26px;
+   color:rgba(255,255,255,.8);
+   letter-spacing: 0;
+   padding-bottom: 10px;
+   text-align: left
+ }
+ .content-time>div>p span{
+  font-family: PingFangSC-Medium;
+  font-size: 26px;
+  color: #FFFFFF;
+ }
+ .content-price{
+   display: flex;
+   align-items: flex-end;
+ }
+ .content-price>p{
+   font-family: PingFangSC-Medium;
+   font-size: 96px;
+   color: #FFFFFF;
+   line-height: 68px;
+   text-align: left;
+   padding-bottom: 10%;
+ }
+ 
+  /* 选择支付方式部分 */
   .pay-choose-box{
    width: 100%;
    flex: 1;
@@ -212,7 +320,23 @@
    }
    .choose-radio-box-right input{
      width:44px;
-     height: 44px;
-    
+     height: 44px; 
    }
+   /* 支付按钮部分 */
+    .pay-btn{
+    width: 686px;
+    height: 88px;
+    background: #21C4B3;
+    border-radius: 4px;
+    margin: 20px auto;
+    }
+    .pay-btn>p{
+    font-family: PingFangSC-Regular;
+    font-size: 36px;
+    color: #FFFFFF;
+    letter-spacing: 0.58px;
+    text-align: center;
+    line-height: 88px;
+    }
+   
 </style>
