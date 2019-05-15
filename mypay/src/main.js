@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 import 'lib-flexible'
 import store from './store/store.js'
+import FastClick from 'fastclick'
+
+FastClick.attach(document.body);
 
 Vue.config.productionTip = false
 
