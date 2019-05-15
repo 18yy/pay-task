@@ -1,0 +1,14 @@
+{
+  "myid":{
+     "carid": "粤B12344",
+     "intimes": {
+         "date": "2018-03-10",
+         "dateTime": "12:10"
+       },
+    "outtimes":{
+      "date": "2018-03-20",
+      "dateTime": "10:40"
+    },
+     "paidPrice": "40.00"
+  }
+}

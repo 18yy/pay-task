@@ -23,11 +23,14 @@
           </div>
           <div class="content-body">
             <div class="content-time">
-              <div v-for="(item,index) in times" :key="item.id"s>
-                <p>{{item.title}}</p>
-                <p><span>{{item.date}}</span><span>{{item.dateTime}}</span></p>
+              <div>
+                <p>进场时间</p>
+                <p><span>{{intimes.date}}</span><span>{{intimes.dateTime}}</span></p>
               </div>
-             
+              <div>
+                <p>出场时间</p>
+                <p><span>{{outtimes.date}}</span><span>{{outtimes.dateTime}}</span></p>
+              </div>
             </div>
             <div class="content-price">
               <p>￥<span>{{paidPrice}}</span></p>
@@ -62,6 +65,7 @@
 </template>
 
 <script>
+  import axios from "axios"
   export default {
     name: 'Pay',
     data() {
@@ -70,24 +74,20 @@
         sTopBgSrc:require('@/assets/s-top-bg.png'),
         sBottomBgSrc:require('@/assets/s-bottom-bg.png'),
         backSrc:require('@/assets/back.png'),
+        carid:null,
+        intimes:{
+          date:null,
+          dateTime:null
+        },
+        outtimes:{
+          date:null,
+          dateTime:null
+        },
+        paidPrice:null,
         nowindex:0,
-        carid: "粤B12344",
         isClick:false,
         isPaid:false,
         dialogMsg:"",
-        times:[{
-          id:0,
-          title:"进场时间",
-          date:"2018-03-10",
-          dateTime:"12:10"
-        },
-        {
-          id: 1,
-          title: "出场时间",
-          date: "2018-03-14",
-          dateTime: "11:20"
-        }],
-        paidPrice:"40.00",
         radios:[{
           id:0,
           title:"微信支付",
@@ -120,10 +120,17 @@
         }]
       }
     },
-    mounted() {
-      this.isPaid=this.$store.state.isPaid;
-    },
     methods:{
+      init(data){
+        
+        this.carid=data.carid;
+        this.intimes.date=data.intimes.date;
+        this.intimes.dateTime=data.intimes.dateTime;
+        this.outtimes.date=data.outtimes.date;
+        this.outtimes.dateTime=data.outtimes.dateTime;
+        this.paidPrice=data.paidPrice
+        console.log(data.intimes.date)
+      },
        check(index) {
         let radiosArr=this.radios;
         for(var i=0;i<radiosArr.length;i++){
@@ -150,6 +157,18 @@
          }
        }
     }
+    ,
+    mounted() {
+      
+      axios.get('/api/myid').then( (res) =>{
+        console.log(res.data.data)
+        this.init(res.data.data)
+      })
+      .catch((error)=> {
+      console.log(error)
+      })
+      this.isPaid=this.$store.state.isPaid;
+    },
   }
 </script>
 
@@ -337,6 +356,9 @@
   font-family: PingFangSC-Medium;
   font-size: 26px;
   color: #FFFFFF;
+ }
+ .content-time>div>p span:first-child{
+   padding-right: 8px;
  }
  .content-price{
    display: flex;

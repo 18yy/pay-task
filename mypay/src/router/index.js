@@ -7,7 +7,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/id',
+      path: '/id=粤B12344',
       name: 'Pay',
       component: Pay
     }
