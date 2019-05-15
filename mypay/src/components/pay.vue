@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="pay-choose-box">
+    <div class="pay-choose-box" v-if="!isPaid">
       <div class="choose-radio-box" v-for="(item,index) in radios" :key="item.id">
         <div class="choose-radio-box-left"></div>
         <div class="choose-radio-box-right">
@@ -48,8 +48,15 @@
         </div>
       </div>
     </div>
-    <div class="pay-btn">
+    <div class="pay-btn" @click="paidIt()" v-if="!isPaid">
       <p>支付</p>
+    </div>
+    <div class="mask" v-if="isClick"></div>
+    <div class="dialog" v-if="isClick">
+      <p>{{dialogMsg}}</p>
+      <div class="dialogBtn" @click="agreeIt">
+        <p>确定</p>
+      </div>
     </div>
   </div>
 </template>
@@ -63,8 +70,11 @@
         sTopBgSrc:require('@/assets/s-top-bg.png'),
         sBottomBgSrc:require('@/assets/s-bottom-bg.png'),
         backSrc:require('@/assets/back.png'),
+        nowindex:0,
         carid: "粤B12344",
+        isClick:false,
         isPaid:false,
+        dialogMsg:"",
         times:[{
           id:0,
           title:"进场时间",
@@ -110,20 +120,84 @@
         }]
       }
     },
+    mounted() {
+      this.isPaid=this.$store.state.isPaid;
+    },
     methods:{
        check(index) {
-        console.log(index);
         let radiosArr=this.radios;
         for(var i=0;i<radiosArr.length;i++){
           radiosArr[i].isChecked=false;
         }
         radiosArr[index].isChecked=true;
+        this.nowindex=index;
+       },
+       paidIt(){
+        this.isClick=true;
+        if(this.nowindex==0){
+          this.dialogMsg="微信支付无法支付，重新选择"
+        }else{
+          this.dialogMsg="支付成功请点击确定";
+          
+        }
+       },
+       agreeIt(){
+         this.isClick=false;
+         if(this.nowindex != 0){
+            this.$store.dispatch('paidMethod');
+            this.isPaid=this.$store.getters.getPaidMethod;
+            console.log(this.isPaid)
+         }
        }
     }
   }
 </script>
 
 <style scoped>
+  .mask{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    background: rgba(0,0,0,.5);
+  }
+  .dialog{
+    width: 70%;
+    height: 25%;
+    position: absolute;
+    top:30%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 999;
+    background:rgba(255,255,255,.9);
+    border-radius: 10px;
+  }
+  .dialog>p{
+    font-size: 36px;
+    font-family: PingFangSC-Medium;
+    color: #333333;
+    margin-top: 23%;
+  }
+  .dialogBtn{
+    width: 30%;
+    height: 20%;
+    background: #21C4B3;
+    border-radius: 25px;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .dialogBtn>p{
+    font-family: PingFangSC-Medium;
+    font-size: 30px;
+    color: #ffffff;
+  }
   #pay{
     width:100%;
     height: 100%;
@@ -201,7 +275,7 @@
      position: absolute;
      top: 0;
      left: 0;
-     z-index: 999;
+     z-index: 99;
  }
  .content-header{
     width: 100%;
