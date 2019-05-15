@@ -129,7 +129,7 @@
         this.outtimes.date=data.outtimes.date;
         this.outtimes.dateTime=data.outtimes.dateTime;
         this.paidPrice=data.paidPrice
-        console.log(data.intimes.date)
+        // console.log(data.intimes.date)
       },
        check(index) {
         let radiosArr=this.radios;
